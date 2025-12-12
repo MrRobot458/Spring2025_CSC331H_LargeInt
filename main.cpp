@@ -15,6 +15,7 @@
 
 using namespace std;
 
+//---- Main program ----//
 int main() {
     LargeInt num1;  // Stores the first LargeInt given by the user
     LargeInt num2;  // Stores the 2nd LargeInt given by the user

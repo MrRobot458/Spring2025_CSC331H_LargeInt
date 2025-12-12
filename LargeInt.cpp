@@ -12,16 +12,34 @@ using namespace std;
 //---- LargeInt class implementation ----//
 
 // Constructor
-LargeInt::LargeInt() {}
+LargeInt::LargeInt() { digits.insertFirst(0); }
 
 // Destructor
-LargeInt::~LargeInt() {}
+LargeInt::~LargeInt() { }
 
 // Removes leading zeros
-void LargeInt::removeLeadingZeros() {}
+void LargeInt::removeLeadingZeros() {
+    DoublyLinkedList<int>::Iterator it = nullptr;  // Iterator for LargeInt digits
 
-// Normalizes the LargeInt
-void LargeInt::normalize() {}
+    while (digits.getLength() > 1) {
+        // Set iterator to first digit
+        it = digits.begin();
+
+        if (*it == 0) digits.deleteItem(0);
+        else break;
+    }
+    return;
+}
+
+// Normalizes the LargeInt (ensures at least one digit and no leading zeros)
+void LargeInt::normalize() {
+    // Remove leading zeros
+    removeLeadingZeros();
+
+    // Check if this is zero
+    if (digits.isEmpty()) digits.insertFirst(0);
+    return;
+}
 
 // Addition operator (+)
 LargeInt LargeInt::operator+(const LargeInt&) const {}

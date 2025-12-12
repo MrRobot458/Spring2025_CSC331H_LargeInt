@@ -20,7 +20,7 @@ class LargeInt {
         // Removes leading zeros
         void removeLeadingZeros();
 
-        // Normalizes the LargeInt
+        // Normalizes the LargeInt (ensures at least one digit and no leading zeros)
         void normalize();
 
     public:
