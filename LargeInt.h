@@ -1,6 +1,10 @@
 /*
 * Purpose:
 *     This is the header file for the LargeInt class. The C++ language standard is C++20.
+*     Rules regarding the LargeInt type:
+*         1. LargeInt type is non-negative (>= 0).
+*         2. For subtraction, the LargeInt being subtracted must be smaller. If not, the result of the subtraction will be
+*            zero in order to maintain rule #1.
 * 
 * Input: None.
 * Output: None.
@@ -61,10 +65,10 @@ class LargeInt {
         bool operator>=(const LargeInt&);
 
         // Insertion operator (<<)
-        friend ostream& operator<<(ostream&, const LargeInt&);
+        friend std::ostream& operator<<(std::ostream&, const LargeInt&);
 
         // Extraction operator (>>)
-        friend istream& operator>>(istream&, LargeInt&);
+        friend std::istream& operator>>(std::istream&, LargeInt&);
 };
 
 #endif

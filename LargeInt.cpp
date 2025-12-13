@@ -1,13 +1,16 @@
 /*
 * Purpose:
 *     This is the implementaion file for the LargeInt class. The C++ language standard is C++20.
+*     Rules regarding the LargeInt type:
+*         1. LargeInt type is non-negative (>= 0).
+*         2. For subtraction, the LargeInt being subtracted must be smaller. If not, the result of the subtraction will be
+*            zero in order to maintain rule #1.
 *
 * Input: None.
 * Output: None.
 */
 
 #include "LargeInt.h"
-using namespace std;
 
 //---- LargeInt class implementation ----//
 
@@ -280,7 +283,7 @@ bool LargeInt::operator<(const LargeInt& other) {
     DoublyLinkedList<int>::Iterator it1 = nullptr;  // Iterator for this LargeInt
     DoublyLinkedList<int>::Iterator it2 = nullptr;  // Iterator for the other LargeInt
     DoublyLinkedList<int>::Iterator end = nullptr;  // Endpoint for this LargeInt
-    bool isLess = false;                            // Boolean flag: true if this LargeInt is less than another
+    bool isLess = false;                            // Boolean flag: true if this LargeInt is less than another.
 
     // Check lengths then digits
     if (digits.getLength() < other.digits.getLength()) {
@@ -308,6 +311,7 @@ bool LargeInt::operator<(const LargeInt& other) {
             ++it1;
             ++it2;
         }
+        // If loop exited without breaking, both LargeInt's are equal, so isLess remains false (the default)
     }
     return isLess;
 }
@@ -337,7 +341,45 @@ bool LargeInt::operator>=(const LargeInt& other) {
 }
 
 // Insertion operator (<<)
-ostream& operator<<(ostream&, const LargeInt&) {}
+std::ostream& operator<<(std::ostream& outputStream, const LargeInt& num) {
+    LargeInt& numRef = const_cast<LargeInt&>(num);  // LargeInt reference to maintain friend context with LargeInt class
+    DoublyLinkedList<int>::Iterator it = nullptr;   // Iterator for the LargeInt
+    DoublyLinkedList<int>::Iterator end = nullptr;  // Endpoint for the LargeInt
+
+    // Set the iterator and endpoint
+    it = numRef.digits.begin();
+    end = numRef.digits.end();
+
+    // Iterate and insert into output stream
+    while (it != end) {
+        outputStream << *it;
+        ++it;
+    }
+    return outputStream;
+}
 
 // Extraction operator (>>)
-istream& operator>>(istream&, LargeInt&) {}
+std::istream& operator>>(std::istream& inputStream, LargeInt& num) {
+    std::string input = "";  // Stores the input from the input stream
+
+    // Read input into the input string 
+    inputStream >> input;
+
+    // Reset the LargeInt to zero
+    while (num.digits.getLength() > 0) {
+        DoublyLinkedList<int>::Iterator it = nullptr;  // Iterator that points to first digit in LargeInt
+
+        // Set the iterator and current delete digit
+        it = num.digits.begin();
+        num.digits.deleteItem(*it);
+    }
+    // Set the LargeInt equal to the input
+    for (char ch: input) {
+        if (isdigit(ch)) {
+            num.digits.insertLast(ch - '0');
+        }
+    }
+    // Normalize the LargeInt
+    num.normalize();
+    return inputStream;
+}
