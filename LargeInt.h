@@ -31,34 +31,34 @@ class LargeInt {
         ~LargeInt();
 
         // Addition operator (+)
-        LargeInt operator+(const LargeInt&) const;
+        LargeInt operator+(const LargeInt&);
 
         // Subtraction operator (-)
-        LargeInt operator-(const LargeInt&) const;
+        LargeInt operator-(const LargeInt&);
 
         // Multiplication operator (*)
-        LargeInt operator*(const LargeInt&) const;
+        LargeInt operator*(const LargeInt&);
 
         // Division operator (/)
-        LargeInt operator/(const LargeInt&) const;
+        LargeInt operator/(const LargeInt&);
 
         // Modulo operator (%)
-        LargeInt operator%(const LargeInt&) const;
+        LargeInt operator%(const LargeInt&);
 
         // Equality operator (==)
-        bool operator==(const LargeInt&) const;
+        bool operator==(const LargeInt&);
 
         // Less than operator (<)
-        bool operator<(const LargeInt&) const;
+        bool operator<(const LargeInt&);
 
         // Less than or equal to operator (<=)
-        bool operator<=(const LargeInt&) const;
+        bool operator<=(const LargeInt&);
 
         // Greater than operator operator (>)
-        bool operator>(const LargeInt&) const;
+        bool operator>(const LargeInt&);
 
         // Greater than or equal to operator (>=)
-        bool operator>=(const LargeInt&) const;
+        bool operator>=(const LargeInt&);
 
         // Insertion operator (<<)
         friend ostream& operator<<(ostream&, const LargeInt&);
