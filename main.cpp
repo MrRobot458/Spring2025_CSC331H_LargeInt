@@ -17,8 +17,8 @@ using namespace std;
 
 //---- Main program ----//
 int main() {
-    LargeInt num1;  // Stores the first LargeInt given by the user
-    LargeInt num2;  // Stores the 2nd LargeInt given by the user
+    LargeInt num1;  // First LargeInt given by the user
+    LargeInt num2;  // Second LargeInt given by the user
 
     // Get the LargeInt values from the user
     cout << "\nEnter the first large integer: ";

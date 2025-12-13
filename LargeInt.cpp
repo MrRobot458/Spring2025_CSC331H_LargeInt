@@ -247,19 +247,94 @@ LargeInt LargeInt::operator%(const LargeInt& other) {
 }
 
 // Equality operator (==)
-bool LargeInt::operator==(const LargeInt&) {}
+bool LargeInt::operator==(const LargeInt& other) {
+    DoublyLinkedList<int>::Iterator it1 = nullptr;  // Iterator for this LargeInt
+    DoublyLinkedList<int>::Iterator it2 = nullptr;  // Iterator for the other LargeInt
+    DoublyLinkedList<int>::Iterator end = nullptr;  // Endpoint for this LargeInt
+    bool isEqual = true;                            // Boolean flag: true if both LargeInt's are equal
+
+    // Check and compare number of digits
+    if (digits.getLength() != other.digits.getLength()) {
+        isEqual = false;
+    }
+    else {
+        // Set the iterators and endpoint
+        it1 = this->digits.begin();
+        it2 = const_cast<LargeInt&>(other).digits.begin();
+        end = this->digits.end();
+
+        // Iterate digits and compare values
+        while ((it1 != end) && isEqual) {
+            if (*it1 != *it2) {
+                isEqual = false;
+            }
+            ++it1;
+            ++it2;
+        }
+    }
+    return isEqual;
+}
 
 // Less than operator (<)
-bool LargeInt::operator<(const LargeInt&) {}
+bool LargeInt::operator<(const LargeInt& other) {
+    DoublyLinkedList<int>::Iterator it1 = nullptr;  // Iterator for this LargeInt
+    DoublyLinkedList<int>::Iterator it2 = nullptr;  // Iterator for the other LargeInt
+    DoublyLinkedList<int>::Iterator end = nullptr;  // Endpoint for this LargeInt
+    bool isLess = false;                            // Boolean flag: true if this LargeInt is less than another
+
+    // Check lengths then digits
+    if (digits.getLength() < other.digits.getLength()) {
+        isLess = true;
+    }
+    else if (digits.getLength() > other.digits.getLength()) {
+        isLess = false;
+    }
+    else {
+        // Set iterators and endpoint
+        it1 = this->digits.begin();
+        it2 = const_cast<LargeInt&>(other).digits.begin();
+        end = this->digits.end();
+
+        // Iterate digits and compare values
+        while (it1 != end) {
+            if (*it1 < *it2) {
+                isLess = true;
+                break;
+            }
+            if (*it1 > *it2) {
+                isLess = false;
+                break;
+            }
+            ++it1;
+            ++it2;
+        }
+    }
+    return isLess;
+}
 
 // Less than or equal to operator (<=)
-bool LargeInt::operator<=(const LargeInt&) {}
+bool LargeInt::operator<=(const LargeInt& other) {
+    bool isLessOrEqual = false;  // Boolean flag: true if this LargeInt is less than or equal to another
+    
+    if ((*this < other) || (*this == other)) isLessOrEqual = true;
+    return isLessOrEqual;
+}
 
 // Greater than operator operator (>)
-bool LargeInt::operator>(const LargeInt&) {}
+bool LargeInt::operator>(const LargeInt& other) {
+    bool isGreater = false;  // Boolean flag: true if this LargeInt is greater than another
+
+    if (!(*this <= other)) isGreater = true;
+    return isGreater;
+}
 
 // Greater than or equal to operator (>=)
-bool LargeInt::operator>=(const LargeInt&) {}
+bool LargeInt::operator>=(const LargeInt& other) {
+    bool isGreaterOrEqual = false;  // Boolean flag: true if this LargeInt is greater than or equal to another
+
+    if (!(*this < other)) isGreaterOrEqual = true;
+    return isGreaterOrEqual;
+}
 
 // Insertion operator (<<)
 ostream& operator<<(ostream&, const LargeInt&) {}
