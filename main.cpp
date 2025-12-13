@@ -2,11 +2,11 @@
 * Purpose:
 *     This program tests the LargeInt class by performing arithmetic operations on two LargeInt values provided by the user.
 *     Rules regarding the LargeInt type:
-*         1. LargeInt type is non-negative (>= 0).
-*         2. For subtraction, the LargeInt being subtracted must be smaller. If not, the result of the subtraction will be
-*            zero in order to maintain rule #1.
-*         3. Currently division by zero will return a result of zero (0) instead of appropriately throwing an error. This is
-*            temporary and will be improved later.
+*         1. LargeInt type is unsigned and non-negative (>= 0).
+*         2. In subtraction, the LargeInt being subtracted from must be greater. If not, the result of the subtraction will be
+*            zero in order to maintain rule #1. This is temporary and will be improved later.
+*         3. Currently, division by zero will return a result of zero (0) instead of appropriately throwing an error. This will
+*            also be improved later.
 * 
 * Input:
 *     1. First LargeInt value provided by the user.

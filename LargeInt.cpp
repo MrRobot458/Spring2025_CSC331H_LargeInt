@@ -2,11 +2,11 @@
 * Purpose:
 *     This program tests the LargeInt class by performing arithmetic operations on two LargeInt values provided by the user.
 *     Rules regarding the LargeInt type:
-*         1. LargeInt type is non-negative (>= 0).
-*         2. For subtraction, the LargeInt being subtracted must be smaller. If not, the result of the subtraction will be
-*            zero in order to maintain rule #1.
-*         3. For division, currently division by zero will return a result of zero (0). This is temporary and will be improved
-*            later.
+*         1. LargeInt type is unsigned and non-negative (>= 0).
+*         2. In subtraction, the LargeInt being subtracted from must be greater. If not, the result of the subtraction will be
+*            zero in order to maintain rule #1. This is temporary and will be improved later.
+*         3. Currently, division by zero will return a result of zero (0) instead of appropriately throwing an error. This will
+*            also be improved later.
 *
 * Input: None.
 * Output: None.
@@ -141,16 +141,17 @@ LargeInt LargeInt::operator*(const LargeInt& other) {
     DoublyLinkedList<int>::Iterator end2 = nullptr;  // Endpoint for the other LargeInt
 
     int multiplier = 0;  // Stores the current multiplier
+    int position = 0;    // The position of the multiplier
     int product = 0;     // Stores the temporary product
     int carry = 0;       // Stores the carry amount
-    int position = 0;    // Stores the current digit's position 
 
     // Set the initial result
     result.digits.deleteItem(0);
     result.digits.insertFirst(0);
 
-    // Set iterator and endpoint for the other LargeInt
+    // Set both endpoints, and the iterator for the other LargeInt
     it2 = const_cast<LargeInt&>(other).digits.revBegin();
+    end1 = this->digits.revEnd();
     end2 = const_cast<LargeInt&>(other).digits.revEnd();
 
     // Iterate
@@ -164,9 +165,8 @@ LargeInt LargeInt::operator*(const LargeInt& other) {
         for (int i = 0; i < position; i++) {
             temp.digits.insertLast(0);
         }
-        // Set the carry, and the iterator and endpoint of this LargeInt
+        // Set the carry and the iterator of this LargeInt
         it1 = this->digits.revBegin();
-        end1 = this->digits.revEnd();
         carry = 0;
 
         while ((it1 != end1) || (carry > 0)) {
@@ -252,7 +252,7 @@ LargeInt LargeInt::operator%(const LargeInt& other) {
 }
 
 // Equality operator (==)
-bool LargeInt::operator==(const LargeInt& other) {
+bool LargeInt::operator==(const LargeInt& other) const {
     DoublyLinkedList<int>::Iterator it1 = nullptr;  // Iterator for this LargeInt
     DoublyLinkedList<int>::Iterator it2 = nullptr;  // Iterator for the other LargeInt
     DoublyLinkedList<int>::Iterator end = nullptr;  // Endpoint for this LargeInt
@@ -264,9 +264,9 @@ bool LargeInt::operator==(const LargeInt& other) {
     }
     else {
         // Set the iterators and endpoint
-        it1 = this->digits.begin();
+        it1 = const_cast<LargeInt*>(this)->digits.begin();
         it2 = const_cast<LargeInt&>(other).digits.begin();
-        end = this->digits.end();
+        end = const_cast<LargeInt*>(this)->digits.end();
 
         // Iterate digits and compare values
         while ((it1 != end) && isEqual) {

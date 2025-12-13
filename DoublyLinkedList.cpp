@@ -197,34 +197,6 @@ void DoublyLinkedList<T>::printList() const {
     return;
 }
 
-// Copies another list
-template <typename T>
-void DoublyLinkedList<T>::copy(const DoublyLinkedList<T>& other) {
-    Node<T>* temp = nullptr;
-    temp = other.first;
-
-    while (temp != nullptr) {
-        insertLast(temp->info);
-        temp = temp->next;
-    }
-    return;
-}
-
-// Deletes the entire list
-template <typename T>
-void DoublyLinkedList<T>::destroy() {
-    Node<T>* temp = nullptr;
-
-    while (first != nullptr) {
-        temp = first;
-        first = first->next;
-        delete temp;
-    }
-    last = nullptr;
-    length = 0;
-    return;
-}
-
 //--- Iterator class implementation ---//
  
 // Constructor
