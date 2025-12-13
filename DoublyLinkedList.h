@@ -9,7 +9,7 @@
 #ifndef DOUBLY_LINKED_LIST_H
 #define DOUBLY_LINKED_LIST_H
 
-// Structure declaration for nodes
+//---- Node struct definition ----//
 template <typename T>
 struct Node {
     T info;         // Stores data of a generic type
@@ -20,7 +20,7 @@ struct Node {
     Node(const T& item) : info(item), next(nullptr), prev(nullptr) { }
 };
 
-// DoublyLinkedList class declaration
+//---- DoublyLinkedList class declaration ----//
 template <typename T>
 class DoublyLinkedList {
 private:
@@ -44,6 +44,9 @@ public:
     // Overloads the assignment operator (=)
     const DoublyLinkedList<T>& operator=(const DoublyLinkedList<T>&);
 
+    // Destructor
+    ~DoublyLinkedList();
+
     // Searches the list for a given item
     bool searchItem(T) const;
 
@@ -65,10 +68,7 @@ public:
     // Displays the list
     void printList() const;
 
-    // Destructor
-    ~DoublyLinkedList();
-
-    // Iterator class declaration
+    //--- Iterator class declaration ---//
     class Iterator {
     private:
         Node<T>* current;
@@ -79,6 +79,9 @@ public:
 
         // Overloaded constructor
         Iterator(Node<T>*);
+
+        // Destructor
+        ~Iterator();
 
         // Overloads the dereference operator (*)
         T& operator*() const;
@@ -103,10 +106,9 @@ public:
 
         // Overloads the inequality operator (!=)
         bool operator!=(const Iterator&) const;
-
-        // Destructor
-        ~Iterator();
     };
+
+    //--- DoublyLinkedList Iterator methods declarations ---//
 
     // Returns the starting point for traversing the list
     Iterator begin();

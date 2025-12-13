@@ -11,7 +11,7 @@
 
 using namespace std;
 
-// DoublyLinkedList class implementation
+//---- DoublyLinkedList class implementation ----//
 
 // Constructor
 template <typename T>
@@ -30,8 +30,41 @@ const DoublyLinkedList<T>& DoublyLinkedList<T>::operator=(const DoublyLinkedList
         destroy();
         copy(other);
     }
-
     return *this;
+}
+
+// Destructor
+template <typename T>
+DoublyLinkedList<T>::~DoublyLinkedList() {
+    destroy();
+}
+
+// Copies another list
+template <typename T>
+void DoublyLinkedList<T>::copy(const DoublyLinkedList<T>& other) {
+    Node<T>* temp = nullptr;
+    temp = other.first;
+
+    while (temp != nullptr) {
+        insertLast(temp->info);
+        temp = temp->next;
+    }
+    return;
+}
+
+// Deletes the entire list
+template <typename T>
+void DoublyLinkedList<T>::destroy() {
+    Node<T>* temp = nullptr;
+
+    while (first != nullptr) {
+        temp = first;
+        first = first->next;
+        delete temp;
+    }
+    last = nullptr;
+    length = 0;
+    return;
 }
 
 // Searches the list for a given item
@@ -43,12 +76,9 @@ bool DoublyLinkedList<T>::searchItem(T item) const {
     temp = first;
 
     while ((!found) && (temp != nullptr)) {
-        if (temp->info == item) 
-            found = true;
-        else
-            temp = temp->next;
+        if (temp->info == item) found = true;
+        else temp = temp->next;
     }
-
     return found;
 }
 
@@ -68,10 +98,8 @@ bool DoublyLinkedList<T>::insertFirst(T newItem) {
         newNode->next = first;
         first = newNode;
     }
-
     inserted = true;
     length++;
-
     return inserted;
 }
 
@@ -91,10 +119,8 @@ bool DoublyLinkedList<T>::insertLast(T newItem) {
         newNode->prev = last;
         last = newNode;
     }
-
     inserted = true;
     length++;
-
     return inserted;
 }
 
@@ -110,38 +136,30 @@ void DoublyLinkedList<T>::deleteItem(T item) {
     else if (temp->info == item) {  // Item to be deleted is the first node
         first = first->next;
 
-        if (first == nullptr)
-            last = nullptr;
-        else
-            first->prev = nullptr;
+        if (first == nullptr) last = nullptr;
+        else first->prev = nullptr;
 
         length--;
         delete temp;
     }
     else {  // Check other nodes after the first
         while (temp != nullptr) {
-            if (temp->info == item)
-                break;
-            else
-                temp = temp->next;
+            if (temp->info == item) break;
+            else temp = temp->next;
         }
-
         if (temp == nullptr) {
             cout << "\nItem to be deleted is not in the list!\n";
         }
         else {
             temp->prev->next = temp->next;
 
-            if (temp == last)
-                last = last->prev;
-            else
-                temp->next->prev = temp->prev;
+            if (temp == last) last = last->prev;
+            else temp->next->prev = temp->prev;
 
             length--;
             delete temp;
         }
     }
-
     return;
 }
 
@@ -151,7 +169,6 @@ bool DoublyLinkedList<T>::isEmpty() const {
     bool check = false;
 
     if (first == nullptr) check = true;
-    
     return check;
 }
 
@@ -162,21 +179,21 @@ int DoublyLinkedList<T>::getLength() const { return length; }
 // Displays the list
 template <typename T>
 void DoublyLinkedList<T>::printList() const {
+    Node<T>* current = nullptr;
+
     if (first == nullptr) {
         cout << "\nThe list is empty, nothing to print!\n";
     }
     else {
-        Node<T>* current = first;
+        current = first;
         cout << "\nList contents: ";
 
         while (current != nullptr) {
             cout << current->info << " ";
             current = current->next;
         }
-
         cout << "\n";
     }
-
     return;
 }
 
@@ -190,7 +207,6 @@ void DoublyLinkedList<T>::copy(const DoublyLinkedList<T>& other) {
         insertLast(temp->info);
         temp = temp->next;
     }
-
     return;
 }
 
@@ -202,25 +218,14 @@ void DoublyLinkedList<T>::destroy() {
     while (first != nullptr) {
         temp = first;
         first = first->next;
-
         delete temp;
     }
-
     last = nullptr;
     length = 0;
-
     return;
 }
 
-// Destructor
-template <typename T>
-DoublyLinkedList<T>::~DoublyLinkedList() {
-    destroy();
-}
-
-
-// ***********************************************************************************
-// Iterator class implementation
+//--- Iterator class implementation ---//
  
 // Constructor
 template <typename T>
@@ -230,13 +235,16 @@ DoublyLinkedList<T>::Iterator::Iterator() : current(nullptr) { }
 template <typename T>
 DoublyLinkedList<T>::Iterator::Iterator(Node<T>* ptr) : current(ptr) { }
 
+// Destructor
+template <typename T>
+DoublyLinkedList<T>::Iterator::~Iterator() { }
+
 // Overloads the dereference operator (*)
 template <typename T>
 T& DoublyLinkedList<T>::Iterator::operator*() const {
     T& temp = current->info;
     
     if (current == nullptr) throw runtime_error("\nAttempted to dereference a null pointer.\n");
-        
     return temp;
 }
 
@@ -245,7 +253,6 @@ template <typename T>
 T* DoublyLinkedList<T>::Iterator::operator->() const {
     T* ptr = nullptr;
     ptr = &current->info;
-    
     return ptr;
 }
 
@@ -278,7 +285,6 @@ typename DoublyLinkedList<T>::Iterator DoublyLinkedList<T>::Iterator::operator++
     temp = *this;
 
     if (current != nullptr) current = current->next;
-
     return temp;
 }
 
@@ -289,7 +295,6 @@ typename DoublyLinkedList<T>::Iterator DoublyLinkedList<T>::Iterator::operator--
     temp = *this;
 
     if (current != nullptr) current = current->prev;
-
     return temp;
 }
 
@@ -299,7 +304,6 @@ bool DoublyLinkedList<T>::Iterator::operator==(const Iterator& other) const {
     bool isEqual = false;
 
     if (current == other.current) isEqual = true;
-
     return isEqual;
 }
 
@@ -309,24 +313,16 @@ bool DoublyLinkedList<T>::Iterator::operator!=(const Iterator& other) const {
     bool isEqual = false;
 
     if (current != other.current) isEqual = true;
-
     return isEqual;
 }
 
-// Destructor
-template <typename T>
-DoublyLinkedList<T>::Iterator::~Iterator() { }
-
-
-// ***********************************************************************************
-// DoublyLinkedList class iteration methods' implementation
+//--- DoublyLinkedList Iterator methods implementation ---//
 
 // Returns the starting point for traversing the list
 template <typename T>
 typename DoublyLinkedList<T>::Iterator DoublyLinkedList<T>::begin() {
     Iterator it = nullptr;
     it = Iterator(first);
-
     return it;
 }
 
@@ -335,7 +331,6 @@ template <typename T>
 typename DoublyLinkedList<T>::Iterator DoublyLinkedList<T>::end() {
     Iterator it = nullptr;
     it = Iterator(nullptr);
-
     return it;
 }
 
@@ -344,7 +339,6 @@ template <typename T>
 typename DoublyLinkedList<T>::Iterator DoublyLinkedList<T>::revBegin() {
     Iterator it = nullptr;
     it = Iterator(last);
-
     return it;
 }
 
@@ -353,12 +347,8 @@ template <typename T>
 typename DoublyLinkedList<T>::Iterator DoublyLinkedList<T>::revEnd() {
     Iterator it = nullptr;
     it = Iterator(nullptr);
-
     return it;
 }
 
-
-// ***********************************************************************************
-
-// Declaration to prevent unresolved external symbol(s) linker error (LNK2019)
+//---- Declaration to prevent unresolved external symbol(s) linker error (LNK2019) ----//
 template class DoublyLinkedList<int>;

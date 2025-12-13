@@ -1,10 +1,12 @@
 /*
 * Purpose:
-*     This is the header file for the LargeInt class. The C++ language standard is C++20.
+*     This program tests the LargeInt class by performing arithmetic operations on two LargeInt values provided by the user.
 *     Rules regarding the LargeInt type:
 *         1. LargeInt type is non-negative (>= 0).
 *         2. For subtraction, the LargeInt being subtracted must be smaller. If not, the result of the subtraction will be
 *            zero in order to maintain rule #1.
+*         3. For division, currently division by zero will return a result of zero (0). This is temporary and will be improved
+*            later.
 * 
 * Input: None.
 * Output: None.

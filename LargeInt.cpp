@@ -1,10 +1,12 @@
 /*
 * Purpose:
-*     This is the implementaion file for the LargeInt class. The C++ language standard is C++20.
+*     This program tests the LargeInt class by performing arithmetic operations on two LargeInt values provided by the user.
 *     Rules regarding the LargeInt type:
 *         1. LargeInt type is non-negative (>= 0).
 *         2. For subtraction, the LargeInt being subtracted must be smaller. If not, the result of the subtraction will be
 *            zero in order to maintain rule #1.
+*         3. For division, currently division by zero will return a result of zero (0). This is temporary and will be improved
+*            later.
 *
 * Input: None.
 * Output: None.
@@ -62,7 +64,7 @@ LargeInt LargeInt::operator+(const LargeInt& other) {
     result.digits.deleteItem(0);
 
     // Iterate
-    while (it1 != end || it2 != end || carry > 0) {
+    while ((it1 != end) || (it2 != end) || (carry > 0)) {
         // Add carry and current digits
         sum = carry;
 
@@ -167,7 +169,7 @@ LargeInt LargeInt::operator*(const LargeInt& other) {
         end1 = this->digits.revEnd();
         carry = 0;
 
-        while (it1 != end1 || carry > 0) {
+        while ((it1 != end1) || (carry > 0)) {
             // Set current product
             product = carry;
 
@@ -360,16 +362,15 @@ std::ostream& operator<<(std::ostream& outputStream, const LargeInt& num) {
 
 // Extraction operator (>>)
 std::istream& operator>>(std::istream& inputStream, LargeInt& num) {
-    std::string input = "";  // Stores the input from the input stream
+    std::string input = "";                        // Stores the input from the input stream
+    DoublyLinkedList<int>::Iterator it = nullptr;  // Iterator that points to first digit in LargeInt
 
     // Read input into the input string 
     inputStream >> input;
 
     // Reset the LargeInt to zero
     while (num.digits.getLength() > 0) {
-        DoublyLinkedList<int>::Iterator it = nullptr;  // Iterator that points to first digit in LargeInt
-
-        // Set the iterator and current delete digit
+        // Set the iterator to the first digit and delete it
         it = num.digits.begin();
         num.digits.deleteItem(*it);
     }
